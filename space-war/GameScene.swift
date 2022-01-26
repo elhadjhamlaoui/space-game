@@ -13,11 +13,46 @@ class GameScene: SKScene {
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
-    
+    private var background : SKSpriteNode?
+    private var background2 : SKSpriteNode?
+
     override func didMove(to view: SKView) {
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
+        self.background = self.childNode(withName: "//background") as? SKSpriteNode
+        self.background2 = self.childNode(withName: "//background2") as? SKSpriteNode
+
+        var parallax = SKAction()
+        var parallax2 = SKAction()
+
+        
+        if let background = self.background {
+            background.position = CGPoint(x: 0, y:0)
+            background.zPosition = 3
+            background.size = CGSize(width:self.frame.size.width, height:self.frame.size.height)
+            parallax2 = SKAction.repeatForever(SKAction.move(by: CGVector(dx: -self.frame.size.width, dy: 0), duration: 5))
+
+            background.run(parallax2)
+
+
+        
+        }
+        
+        if let background2 = self.background2 {
+                   background2.position = CGPoint(x: 0, y:0)
+                   background2.zPosition = 3
+                   background2.size = CGSize(width:self.frame.size.width, height:self.frame.size.height)
+                   parallax = SKAction.repeatForever(SKAction.move(by: CGVector(dx: -self.frame.size.width, dy: 0), duration: 5))
+
+                   background2.run(parallax)
+
+            
+               
+        }
+        
+        
+        
         if let label = self.label {
             label.alpha = 0.0
             label.run(SKAction.fadeIn(withDuration: 2.0))
@@ -88,5 +123,19 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        self.background!.position = CGPoint(x: self.background!.position.x-2, y: self.background!.position.y)
+           if(self.background!.position.x < -self.background!.size.width)
+           {
+            self.background!.position = CGPoint(x: self.background!.position.x + self.background!.size.width , y: self.background!.position.y)
+           }
+        
+        self.background2!.position = CGPoint(x: self.background2!.position.x-20, y: self.background2!.position.y)
+        if(self.background2!.position.x < -self.background2!.size.width)
+        {
+         self.background2!.position = CGPoint(x: self.background2!.position.x + self.background2!.size.width , y: self.background2!.position.y)
+        }
+       
+        
+        
     }
 }
